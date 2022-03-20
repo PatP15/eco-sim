@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 536755207}
   - component: {fileID: 536755206}
   - component: {fileID: 536755208}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Fishy
   m_TagString: Edge
   m_Icon: {fileID: 0}
@@ -551,10 +551,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3959de8ad2d7947e094d2e29382d8b22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 10, y: 5}
+  speed: {x: 1, y: 3}
   fishOffset: 0.75
   topRightCorner: {fileID: 367460943}
   bottomLeftCorner: {fileID: 129633207}
+  r1: 0.1
+  r2: 0.8
+  r3: 0
 --- !u!50 &536755207
 Rigidbody2D:
   serializedVersion: 4
@@ -771,7 +774,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1042457688}
   - component: {fileID: 1042457689}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1129,7 +1132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2015780111}
   - component: {fileID: 2015780112}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Isometric Diamond
   m_TagString: Untagged
   m_Icon: {fileID: 0}

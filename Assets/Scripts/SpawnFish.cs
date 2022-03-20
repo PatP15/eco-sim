@@ -22,7 +22,7 @@ public class SpawnFish : MonoBehaviour
                 Vector2 spawnPosition = new Vector2(spawnX, spawnY);
                 GameObject newFish = Instantiate(fish, spawnPosition, Quaternion.identity);
                 FishMovement fishScript = newFish.GetComponent<FishMovement>();
-                fishScript.speed = new Vector2(Random.Range(-7,7), Random.Range(-7,7));
+                fishScript.speed = new Vector2(Random.Range(-3,3), Random.Range(-3,3));
                 int index = (int)Random.Range(0, colors.Count);
                 for(int k = 0; k < 2; k++){
                     SpriteRenderer sprite = newFish.transform.GetChild(k).GetComponent<SpriteRenderer>();

@@ -1,2 +1,2 @@
 # eco-sim
-Playing around with ecosystem simulations in Unity
+Playing around with ecosystem and animal movement simulations in Unity

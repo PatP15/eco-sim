@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 //https://drum.lib.umd.edu/bitstream/handle/1903/6220/UG_2001-4.pdf;sequence=1
 
-
+//hello
 //If a neighbor is located less than R1 distance away from the fish, the fish will
 // show repulsion behavior in which it will turn to swim perpendicular to the neighbor in
 // order to avoid a collision. So the influence angle is r 90q.
@@ -23,7 +24,17 @@ using UnityEngine;
 
 public class FishMovement : MonoBehaviour
 {
+    public Slider repSlider;
+    public Slider followSlider;
+    public Slider attractSlider;
     public Vector2 speed = new Vector2(8,8);
+
+    public float maximumSpeed;
+
+    private float repulsiveWeight;
+    private float followWeight;
+    private float attractiveWeight;
+    
 
     public float fishOffset;
 
@@ -55,14 +66,6 @@ public class FishMovement : MonoBehaviour
         Move();
     }
     void Move(){
-        // Vector3 pos = Camera.main.WorldToViewportPoint(transform.position);
-
-        // moveDirection = new Vector2(moveDirection.x, moveDirection.y);
-        
-        
-       
-        
-        //Debug.Log(hitColliders.Length);
         
         if (moveDirection != Vector2.zero) {
             float angle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
@@ -83,20 +86,14 @@ public class FishMovement : MonoBehaviour
             else{
                 Vector2 perp = Vector2.Perpendicular(closeBird.velocity).normalized;
                 //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
-                closeBird.AddForce(perp);
-                if(closeBird.velocity.x > 5){
-                    closeBird.velocity = new Vector2(5, closeBird.velocity.y);
-                    if(closeBird.velocity.y > 5 ){
-                        closeBird.velocity = new Vector2(closeBird.velocity.x, 5);
-                    }
+                if(Random.Range(0,10)>5){
+                    closeBird.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
                 }
-                if(closeBird.velocity.y > 5){
-                    closeBird.velocity = new Vector2(closeBird.velocity.x, 5);
-                   
-                    if(closeBird.velocity.x > 5 ){
-                         closeBird.velocity = new Vector2(5, closeBird.velocity.y);
-                    }
+                else{
+                    closeBird.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
                 }
+                
+                SlowDownMovement(closeBird);
             }
             
             // Vector2 perp = Vector2.Perpendicular(closeBird.velocity);
@@ -109,23 +106,11 @@ public class FishMovement : MonoBehaviour
         for(int i = 0; i < r2Hit.Length; i++){
             if(!r1Hit.Contains(r2Hit[i])){
                 Rigidbody2D closeBird = r2Hit[i].gameObject.GetComponent<Rigidbody2D>();
-
-                Vector2 dir = new Vector2(closeBird.velocity.x, closeBird.velocity.y).normalized;
+                Vector2 dir = new Vector2(closeBird.velocity.x * followWeight, closeBird.velocity.y * followWeight);
                 //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
                 closeBird.AddForce(dir);
-                if(closeBird.velocity.x > 5){
-                    closeBird.velocity = new Vector2(5, closeBird.velocity.y);
-                    if(closeBird.velocity.y > 5 ){
-                        closeBird.velocity = new Vector2(closeBird.velocity.x, 5);
-                    }
-                }
-                if(closeBird.velocity.y > 5){
-                    closeBird.velocity = new Vector2(closeBird.velocity.x, 5);
-                   
-                    if(closeBird.velocity.x > 5 ){
-                         closeBird.velocity = new Vector2(5, closeBird.velocity.y);
-                    }
-                }
+                SlowDownMovement(closeBird);
+                
 
             }
         }
@@ -135,6 +120,21 @@ public class FishMovement : MonoBehaviour
     }
     void AttractionMovement(){
 
+    }
+
+    void SlowDownMovement(Rigidbody2D rigidbody){
+        float speed = Vector3.Magnitude(rigidbody.velocity);  // test current object speed
+      
+        if (speed > maximumSpeed)
+        
+        {
+            float brakeSpeed = speed - maximumSpeed;  // calculate the speed decrease
+        
+            Vector3 normalisedVelocity = rigidbody.velocity.normalized;
+            Vector3 brakeVelocity = normalisedVelocity * brakeSpeed;  // make the brake Vector3 value
+        
+            rigidbody.AddForce(-brakeVelocity);  // apply opposing brake force
+        }
     }
     private void OnTriggerEnter2D(Collider2D other) {
         //Debug.Log(other.tag);
@@ -154,6 +154,12 @@ public class FishMovement : MonoBehaviour
             
             transform.position = new Vector3(topRightCorner.transform.position.x - fishOffset, transform.position.y, 0);
         }
+    }
+    public void UpdateWeights(){
+        attractiveWeight = attractSlider.value;
+        followWeight = followSlider.value;
+        repulsiveWeight = repSlider.value;
+
     }
 
 }

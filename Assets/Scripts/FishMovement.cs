@@ -71,7 +71,7 @@ public class FishMovement : MonoBehaviour
     private Vector2 moveDirection;
     private Rigidbody2D rBody;
     private Collider2D[] radiusHit; 
-    private Collider2D[] r2Hit; 
+
 
 
 
@@ -91,8 +91,8 @@ public class FishMovement : MonoBehaviour
 
         rBody = this.GetComponent<Rigidbody2D>();
         moveDirection = new Vector2(speed.x, speed.y);
-        if(rBody.velocity == Vector2.zero){
-            rBody.velocity = new Vector2(1,1);
+        if(moveDirection == Vector2.zero){
+            moveDirection = new Vector2(1,1);
         }
         rBody.velocity = moveDirection;
         
@@ -119,9 +119,7 @@ public class FishMovement : MonoBehaviour
             Rigidbody2D closeFish = radiusHit[i].gameObject.GetComponent<Rigidbody2D>();
             float distance = Vector2.Distance(radiusHit[i].gameObject.transform.position, this.transform.position);
             //Debug.Log(distance);
-            if(closeFish.gameObject.GetComponentInChildren<SpriteRenderer>().color == this.GetComponentInChildren<SpriteRenderer>().color && discriminate.isOn){
-                RepulsiveMovement(closeFish);
-            }
+
             if(closeFish == this.GetComponent<Rigidbody2D>()){
                 //Debug.Log("self");
 
@@ -147,33 +145,48 @@ public class FishMovement : MonoBehaviour
         
     }
     void RepulsiveMovement(Rigidbody2D closeFish){
-        rBody.AddForce(-(closeFish.gameObject.transform.position - this.transform.position).normalized*repulsiveWeight);
-        //this.transform.position = Vector2.MoveTowards(this.transform.position, closeFish.gameObject.transform.position, Time.deltaTime * attractiveWeight);
-        Vector2 perp = Vector2.Perpendicular(closeFish.velocity).normalized;
-        //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
-        // if(Random.Range(0,10)>5){
-        //     rBody.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
+        if(discriminate.isOn){
+            if(closeFish.gameObject.GetComponentInChildren<SpriteRenderer>().color != this.GetComponentInChildren<SpriteRenderer>().color){
+                
+                rBody.AddForce(-(closeFish.gameObject.transform.position - this.transform.position).normalized*repulsiveWeight*15);
+               
+            }
+            else{
+                rBody.AddForce(-(closeFish.gameObject.transform.position - this.transform.position).normalized*repulsiveWeight);
+            }
+            //Debug.Log("diff");
+        }
+        else{
+            rBody.AddForce(-(closeFish.gameObject.transform.position - this.transform.position).normalized*repulsiveWeight);
 
-        // }
-        // else{
-        //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
-        // }
+        }
         
-        if(Vector2.Dot(perp, rBody.velocity.normalized)>0){
+        //this.transform.position = Vector2.MoveTowards(this.transform.position, closeFish.gameObject.transform.position, Time.deltaTime * attractiveWeight);
+        // Vector2 perp = Vector2.Perpendicular(closeFish.velocity).normalized;
+        // //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
+        // // if(Random.Range(0,10)>5){
+        // //     rBody.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
+
+        // // }
+        // // else{
+        // //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
+        // // }
+        
+        // if(Vector2.Dot(perp, rBody.velocity.normalized)>0){
             
         
-            rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
+        //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
            
             
-        }
-        else if(Vector2.Dot(perp, rBody.velocity.normalized)<0){
-            // if(Vector2.Dot(rBody.velocity.normalized, closeFish.velocity.normalized)>0){
-            //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
-            // }
-            // else{
-            rBody.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
+        // }
+        // else if(Vector2.Dot(perp, rBody.velocity.normalized)<0){
+        //     // if(Vector2.Dot(rBody.velocity.normalized, closeFish.velocity.normalized)>0){
+        //     //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
+        //     // }
+        //     // else{
+        //     rBody.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
             
-        }
+        // }
         // Vector2 perp = Vector2.Perpendicular(closeBird.velocity);
         // 
         
@@ -182,11 +195,34 @@ public class FishMovement : MonoBehaviour
     void FollowMovement(Rigidbody2D closeFish){
         Vector2 dir = new Vector2(closeFish.velocity.x, closeFish.velocity.y ).normalized;
         //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
-        rBody.AddForce(new Vector2(dir.x * followWeight, dir.y * followWeight));
+        if(discriminate.isOn){
+
+            if(closeFish.gameObject.GetComponentInChildren<SpriteRenderer>().color == this.GetComponentInChildren<SpriteRenderer>().color){
+                
+                rBody.AddForce(new Vector2(dir.x * followWeight, dir.y * followWeight));
+               
+            }
+        }
+        else{
+            rBody.AddForce(new Vector2(dir.x * followWeight, dir.y * followWeight));
+
+        }
     }
     void AttractionMovement(Rigidbody2D closeFish){
         //this.transform.position = Vector2.MoveTowards(this.transform.position, closeFish.gameObject.transform.position, Time.deltaTime * attractiveWeight);
-        rBody.AddForce((closeFish.gameObject.transform.position - this.transform.position).normalized*attractiveWeight);
+        if(discriminate.isOn){
+
+            if(closeFish.gameObject.GetComponentInChildren<SpriteRenderer>().color == this.GetComponentInChildren<SpriteRenderer>().color){
+                
+                rBody.AddForce((closeFish.gameObject.transform.position - this.transform.position).normalized*attractiveWeight*5);
+               
+            }
+        }
+        else{
+            rBody.AddForce((closeFish.gameObject.transform.position - this.transform.position).normalized*attractiveWeight);
+
+        }
+        
         //Debug.Log(closeFish.gameObject.transform.position);
         // if(printVector){
         //     Debug.Log(dir.ToString());

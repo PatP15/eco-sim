@@ -24,22 +24,45 @@ using UnityEngine.UI;
 
 public class FishMovement : MonoBehaviour
 {
+
+    [Header("Circles")]
+
+    //public float radius = 3f;
+    public int segments = 50;
+    //public float angle = 20f;
+    public LineRenderer[] lines = new LineRenderer[3];
+    public bool showCircle;
+
+    public Toggle discriminate;
+
+    [Header("Sliders")]
     public Slider repSlider;
     public Slider followSlider;
     public Slider attractSlider;
+    public Slider selfSlider;
+
+    public Slider r1Slider;
+    public Slider r2Slider;
+    public Slider r3Slider;
+
     public Vector2 speed = new Vector2(8,8);
+    public bool printVector;
 
     public float maximumSpeed;
 
     private float repulsiveWeight;
     private float followWeight;
     private float attractiveWeight;
+    private float selfWeight;
     
 
     public float fishOffset;
 
     public GameObject topRightCorner;
     public GameObject bottomLeftCorner;
+
+    [Header("Radius for fish")]
+
     public float r1;
     public float r2;
     public float r3;
@@ -47,7 +70,7 @@ public class FishMovement : MonoBehaviour
 
     private Vector2 moveDirection;
     private Rigidbody2D rBody;
-    private Collider2D[] r1Hit; 
+    private Collider2D[] radiusHit; 
     private Collider2D[] r2Hit; 
 
 
@@ -56,70 +79,119 @@ public class FishMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        rBody = GetComponent<Rigidbody2D>();
+        for(int i = 0; i < lines.Length; i++){
+            lines[i].positionCount = (segments + 1);
+            lines[i].useWorldSpace = false;
+        }
+       
+
+        
+        
+
+
+        rBody = this.GetComponent<Rigidbody2D>();
         moveDirection = new Vector2(speed.x, speed.y);
+        if(rBody.velocity == Vector2.zero){
+            rBody.velocity = new Vector2(1,1);
+        }
         rBody.velocity = moveDirection;
+        
     }
 
    
     private void FixedUpdate() {
         Move();
+        
+       
     }
+
+#region Fish Movement
     void Move(){
         
         if (moveDirection != Vector2.zero) {
             float angle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
             transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
         }
-        RepulsiveMovement();
-        FollowMovement();
+        //loopo tr
+        radiusHit = Physics2D.OverlapCircleAll(transform.position, r3, 1 << LayerMask.NameToLayer("Fish"));
+        
+        for(int i = 0; i < (int)(radiusHit.Length/3); i++){
+            Rigidbody2D closeFish = radiusHit[i].gameObject.GetComponent<Rigidbody2D>();
+            float distance = Vector2.Distance(radiusHit[i].gameObject.transform.position, this.transform.position);
+            //Debug.Log(distance);
+            if(closeFish.gameObject.GetComponentInChildren<SpriteRenderer>().color == this.GetComponentInChildren<SpriteRenderer>().color && discriminate.isOn){
+                RepulsiveMovement(closeFish);
+            }
+            if(closeFish == this.GetComponent<Rigidbody2D>()){
+                //Debug.Log("self");
+
+                rBody.AddForce(new Vector2(rBody.velocity.normalized.x *selfWeight, rBody.velocity.normalized.y * selfWeight));
+            }
+            else if( distance < r1 ){
+                RepulsiveMovement(closeFish);
+                //Debug.Log("r1");
+            }
+            
+            else if(distance < r2){
+                FollowMovement(closeFish);
+                //Debug.Log("r2");
+            }
+            else if(distance < r3){
+                AttractionMovement(closeFish);
+                //Debug.Log("r3");
+                
+            }
+            SlowDownMovement(rBody);
+        }
         //transform.Translate(moveDirection * Time.deltaTime);
         
     }
-    void RepulsiveMovement(){
-        r1Hit = Physics2D.OverlapCircleAll(transform.position, r1, 1 << LayerMask.NameToLayer("Fish"));
-        foreach(Collider2D other in r1Hit){
-            Rigidbody2D closeBird = other.gameObject.GetComponent<Rigidbody2D>();
-            if(closeBird.velocity == Vector2.zero){
-                closeBird.velocity = new Vector2(1,1);
-            }
-            else{
-                Vector2 perp = Vector2.Perpendicular(closeBird.velocity).normalized;
-                //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
-                if(Random.Range(0,10)>5){
-                    closeBird.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
-                }
-                else{
-                    closeBird.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
-                }
-                
-                SlowDownMovement(closeBird);
-            }
+    void RepulsiveMovement(Rigidbody2D closeFish){
+        rBody.AddForce(-(closeFish.gameObject.transform.position - this.transform.position).normalized*repulsiveWeight);
+        //this.transform.position = Vector2.MoveTowards(this.transform.position, closeFish.gameObject.transform.position, Time.deltaTime * attractiveWeight);
+        Vector2 perp = Vector2.Perpendicular(closeFish.velocity).normalized;
+        //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
+        // if(Random.Range(0,10)>5){
+        //     rBody.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
+
+        // }
+        // else{
+        //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
+        // }
+        
+        if(Vector2.Dot(perp, rBody.velocity.normalized)>0){
             
-            // Vector2 perp = Vector2.Perpendicular(closeBird.velocity);
-            // 
+        
+            rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
+           
+            
         }
+        else if(Vector2.Dot(perp, rBody.velocity.normalized)<0){
+            // if(Vector2.Dot(rBody.velocity.normalized, closeFish.velocity.normalized)>0){
+            //     rBody.AddForce(new Vector2(-perp.x * repulsiveWeight, -perp.y * repulsiveWeight));
+            // }
+            // else{
+            rBody.AddForce(new Vector2(perp.x * repulsiveWeight, perp.y * repulsiveWeight));
+            
+        }
+        // Vector2 perp = Vector2.Perpendicular(closeBird.velocity);
+        // 
+        
     }
     
-    async void FollowMovement(){
-        r2Hit = Physics2D.OverlapCircleAll(transform.position, r2, 1 << LayerMask.NameToLayer("Fish"));
-        for(int i = 0; i < r2Hit.Length; i++){
-            if(!r1Hit.Contains(r2Hit[i])){
-                Rigidbody2D closeBird = r2Hit[i].gameObject.GetComponent<Rigidbody2D>();
-                Vector2 dir = new Vector2(closeBird.velocity.x * followWeight, closeBird.velocity.y * followWeight);
-                //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
-                closeBird.AddForce(dir);
-                SlowDownMovement(closeBird);
-                
-
-            }
-        }
-        
-
-
+    void FollowMovement(Rigidbody2D closeFish){
+        Vector2 dir = new Vector2(closeFish.velocity.x, closeFish.velocity.y ).normalized;
+        //closeBird.velocity = new Vector2(perp.x + closeBird.velocity.x, perp.y + closeBird.velocity.y);
+        rBody.AddForce(new Vector2(dir.x * followWeight, dir.y * followWeight));
     }
-    void AttractionMovement(){
-
+    void AttractionMovement(Rigidbody2D closeFish){
+        //this.transform.position = Vector2.MoveTowards(this.transform.position, closeFish.gameObject.transform.position, Time.deltaTime * attractiveWeight);
+        rBody.AddForce((closeFish.gameObject.transform.position - this.transform.position).normalized*attractiveWeight);
+        //Debug.Log(closeFish.gameObject.transform.position);
+        // if(printVector){
+        //     Debug.Log(dir.ToString());
+        // }
+        //rBody.AddForce(dir);
     }
 
     void SlowDownMovement(Rigidbody2D rigidbody){
@@ -155,11 +227,60 @@ public class FishMovement : MonoBehaviour
             transform.position = new Vector3(topRightCorner.transform.position.x - fishOffset, transform.position.y, 0);
         }
     }
+#endregion
     public void UpdateWeights(){
         attractiveWeight = attractSlider.value;
         followWeight = followSlider.value;
         repulsiveWeight = repSlider.value;
+        selfWeight = selfSlider.value;
+        
+        UpdateRadius();
+        
 
+    }
+
+    private void UpdateRadius() {
+        r1 = r1Slider.value;
+        r2 = r2Slider.value;
+        r3 = r3Slider.value;
+        //Debug.Log("update radius");
+        
+        if(showCircle){
+            DrawCircle(r1, 0);
+            DrawCircle(r2, 1);
+            DrawCircle(r3, 2);
+            //Debug.Log("draw");
+
+        }
+       
+        
+    }
+
+    private void DrawCircle (float radius, int i){
+        
+        float angle = 20f;
+        for (int k = 0; k < (segments + 1); k++) {
+            float x = Mathf.Sin (Mathf.Deg2Rad * angle) * radius;
+            float y = Mathf.Cos (Mathf.Deg2Rad * angle) * radius;
+            
+            lines[i].SetPosition (k,new Vector3(x,y,0) );
+
+            angle += (360f / segments);
+        }
+    }
+    public void ToggleShowCircle(){
+        if(showCircle){
+            showCircle = false;
+            for(int i = 0; i < lines.Length; i++){
+                lines[i].enabled = false;
+            }
+        }else{
+            for(int i = 0; i < lines.Length; i++){
+                lines[i].enabled = true;
+            }
+            showCircle = true;
+            UpdateRadius();
+        }
     }
 
 }

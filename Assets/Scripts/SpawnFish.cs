@@ -10,7 +10,7 @@ public class SpawnFish : MonoBehaviour
 
     public List<Color> colors = new List<Color>();
     // Start is called before the first frame update
-    async void Start()
+    void Start()
     {
         for (int i = 0; i < numberOfFish; i++)
             {

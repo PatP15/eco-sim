@@ -2305,6 +2305,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 467016040}
     - target: {fileID: 3954448304106817467, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
+      propertyPath: maximumSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954448304106817467, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
       propertyPath: attractSlider
       value: 
       objectReference: {fileID: 1332276596}

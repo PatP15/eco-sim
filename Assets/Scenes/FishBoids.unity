@@ -1387,7 +1387,7 @@ MonoBehaviour:
   r3Slider: {fileID: 813300936}
   speed: {x: 1, y: 3}
   printVector: 0
-  maximumSpeed: 2
+  maximumSpeed: 4
   fishOffset: 0.75
   topRightCorner: {fileID: 367460943}
   bottomLeftCorner: {fileID: 129633207}
@@ -1541,7 +1541,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-    shadowBias: 0.5
+    shadowBias: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
@@ -1752,7 +1752,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-    shadowBias: 0.5
+    shadowBias: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
@@ -1881,7 +1881,7 @@ LineRenderer:
     numCapVertices: 0
     alignment: 0
     textureMode: 0
-    shadowBias: 0.5
+    shadowBias: 0
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
@@ -2306,7 +2306,7 @@ PrefabInstance:
       objectReference: {fileID: 467016040}
     - target: {fileID: 3954448304106817467, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
       propertyPath: maximumSpeed
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3954448304106817467, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
       propertyPath: attractSlider

@@ -115,9 +115,10 @@ public class FishMovement : MonoBehaviour
         //loopo tr
         radiusHit = Physics2D.OverlapCircleAll(transform.position, r3, 1 << LayerMask.NameToLayer("Fish"));
         
-        for(int i = 0; i < (int)(radiusHit.Length/3); i++){
-            Rigidbody2D closeFish = radiusHit[i].gameObject.GetComponent<Rigidbody2D>();
-            float distance = Vector2.Distance(radiusHit[i].gameObject.transform.position, this.transform.position);
+        for(int i = 0; i < (int)(radiusHit.Length/2); i++){
+            int index = (int)Random.Range(0,radiusHit.Length-1);
+            Rigidbody2D closeFish = radiusHit[index].gameObject.GetComponent<Rigidbody2D>();
+            float distance = Vector2.Distance(radiusHit[index].gameObject.transform.position, this.transform.position);
             //Debug.Log(distance);
 
             if(closeFish == this.GetComponent<Rigidbody2D>()){

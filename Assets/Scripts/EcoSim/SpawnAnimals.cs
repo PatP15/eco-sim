@@ -73,11 +73,13 @@ public class SpawnAnimals : MonoBehaviour
                 // }
                 
             }
+            CSVManager.CreateReport("Run_output1");
     }
     private void Update() {
         if(!isSpawning){
             StartCoroutine(SpawnFood());
         }
+        UpdateReport();
         
         
     }
@@ -96,5 +98,18 @@ public class SpawnAnimals : MonoBehaviour
         // Debug.Log("hi");
         
         // Debug.Log("bye");
+    }
+
+    private void UpdateReport(){
+        //user name,arms length,current fruit #,chest height,current time,fruit position,basket position,time stamp
+        string[] data = new string[3];
+        data[0] = "Run_output2";
+
+        data[1] = GameObject.FindGameObjectsWithTag("Prey").Length.ToString();
+        
+        data[2] = GameObject.FindGameObjectsWithTag("Fruit").Length.ToString();
+        
+        CSVManager.AppendToReport(data, "Run_output2");
+        //Debug.Log(data);
     }
 }

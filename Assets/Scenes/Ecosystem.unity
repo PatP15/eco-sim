@@ -419,8 +419,16 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4361062959744987316, guid: 96bace41c6a85b6479d537902bdcd0e8, type: 3}
+      propertyPath: m_Mass
+      value: 0.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 4361062959744987316, guid: 96bace41c6a85b6479d537902bdcd0e8, type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4361062959744987316, guid: 96bace41c6a85b6479d537902bdcd0e8, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4361062959744987316, guid: 96bace41c6a85b6479d537902bdcd0e8, type: 3}
       propertyPath: m_IsKinematic
@@ -500,8 +508,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3703093790250368791, guid: 36dbe61bd75ee1247b4f749534847ff0, type: 3}
+      propertyPath: m_Mass
+      value: 0.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703093790250368791, guid: 36dbe61bd75ee1247b4f749534847ff0, type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3703093790250368791, guid: 36dbe61bd75ee1247b4f749534847ff0, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3703093790250368791, guid: 36dbe61bd75ee1247b4f749534847ff0, type: 3}
       propertyPath: m_IsKinematic
@@ -747,8 +763,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5009004470226613523, guid: 4242dcc21ff0bc1479e2bde7b663c464, type: 3}
+      propertyPath: m_Mass
+      value: 0.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009004470226613523, guid: 4242dcc21ff0bc1479e2bde7b663c464, type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5009004470226613523, guid: 4242dcc21ff0bc1479e2bde7b663c464, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5009004470226613523, guid: 4242dcc21ff0bc1479e2bde7b663c464, type: 3}
       propertyPath: m_IsKinematic
@@ -1073,9 +1097,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373768969}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.0000001
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1182,8 +1206,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6211616728665864260, guid: 3cc9be1e4de713c4192e87916b6bab03, type: 3}
+      propertyPath: m_Mass
+      value: 0.0000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211616728665864260, guid: 3cc9be1e4de713c4192e87916b6bab03, type: 3}
       propertyPath: m_UseGravity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6211616728665864260, guid: 3cc9be1e4de713c4192e87916b6bab03, type: 3}
+      propertyPath: m_AngularDrag
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6211616728665864260, guid: 3cc9be1e4de713c4192e87916b6bab03, type: 3}
       propertyPath: m_IsKinematic
@@ -1227,7 +1259,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.6007476, g: 0.7339998, b: 0.9433962, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1267,13 +1299,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1474125766}
-  m_LocalRotation: {x: 0.16826034, y: 0.31283846, z: -0.005518717, w: 0.9347674}
-  m_LocalPosition: {x: -29.7, y: 25.5, z: -35.8}
+  m_LocalRotation: {x: 0.30070576, y: 0, z: 0, w: 0.953717}
+  m_LocalPosition: {x: 0, y: 28.3, z: -41.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 18.543, y: 37.947, z: 5.748}
+  m_LocalEulerAnglesHint: {x: 35, y: 0, z: 0}
 --- !u!1001 &1507054847
 PrefabInstance:
   m_ObjectHideFlags: 0

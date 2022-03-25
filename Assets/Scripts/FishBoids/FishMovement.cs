@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 //https://drum.lib.umd.edu/bitstream/handle/1903/6220/UG_2001-4.pdf;sequence=1
 
-//hello
+
 //If a neighbor is located less than R1 distance away from the fish, the fish will
 // show repulsion behavior in which it will turn to swim perpendicular to the neighbor in
 // order to avoid a collision. So the influence angle is r 90q.

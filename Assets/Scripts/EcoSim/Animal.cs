@@ -122,7 +122,10 @@ public class Animal : MonoBehaviour
             Destroy(this.gameObject);
         }
         if(hunger > 25){
+            hunger -=10;
             Reproduce();
+            Reproduce();
+            
         }
         
     }
@@ -150,12 +153,12 @@ public class Animal : MonoBehaviour
 
     void Reproduce(){
         GameObject newAnimal = Instantiate(this.gameObject, transform.position, Quaternion.identity);
-                
-        newAnimal.GetComponent<Animal>().speed = (Random.Range(speed - 1 , speed + 1));
+        newAnimal.GetComponent<Animal>().hunger = 10;
+        newAnimal.GetComponent<Animal>().speed = (Random.Range(speed - 1, speed + 1));
         newAnimal.GetComponent<Animal>().searchRadius = (Random.Range(searchRadius - 1, searchRadius + 1));
         Vector3 scale = this.transform.localScale;
 
-        float sizeOffset = Random.Range(-0.2f,0.2f);
+        float sizeOffset = Random.Range(-0.1f,0.3f);
         newAnimal.transform.localScale = new Vector3(scale.x + sizeOffset, scale.y + sizeOffset, scale.z + sizeOffset);
 
         Debug.Log("reproduce");

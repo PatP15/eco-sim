@@ -9,6 +9,8 @@ TagManager:
   - Bottom
   - Left
   - Right
+  - Fruit
+  - Prey
   layers:
   - Default
   - TransparentFX

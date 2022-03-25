@@ -2228,6 +2228,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3954448303962690226, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
+      propertyPath: m_Parameters.textureMode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3954448303962690226, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: fb881332404674f4fae9c888043924e1, type: 2}
     - target: {fileID: 3954448304106817464, guid: fb22a6199a7204510886b2f9323a247d, type: 3}
       propertyPath: m_RootOrder
       value: 2

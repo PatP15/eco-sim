@@ -100,13 +100,14 @@ public class FishMovement : MonoBehaviour
 
    
     private void FixedUpdate() {
-        Move();
+        
+        StartCoroutine(Move());
         
        
     }
 
 #region Fish Movement
-    void Move(){
+    IEnumerator Move(){
         
         if (moveDirection != Vector2.zero) {
             float angle = Mathf.Atan2(rBody.velocity.y, rBody.velocity.x) * Mathf.Rad2Deg;
@@ -142,6 +143,7 @@ public class FishMovement : MonoBehaviour
             }
             SlowDownMovement(rBody);
         }
+        yield return new WaitForSeconds(0.1f);
         //transform.Translate(moveDirection * Time.deltaTime);
         
     }

@@ -16,6 +16,15 @@ public class SpawnAnimals : MonoBehaviour
 
     public float maxSpawn = 7f;
     private bool isSpawning = false;
+
+    [Header("Traits")]
+
+    public float minSpeed;
+    public float maxSpeed;
+    public float minRadius;
+    public float maxRadius;
+
+    public float scaleOffset;
     public List<GameObject> animals = new List<GameObject>();
     // Start is called before the first frame update
     void Start()
@@ -29,6 +38,13 @@ public class SpawnAnimals : MonoBehaviour
      
                 Vector3 spawnPosition = new Vector3(spawnX, 0, spawnZ );
                 GameObject newAnimal = Instantiate(animals[(int)(Random.Range(0,animals.Count))], spawnPosition, Quaternion.identity);
+                
+                newAnimal.GetComponent<Animal>().speed = (Random.Range(minSpeed, maxSpeed));
+                newAnimal.GetComponent<Animal>().searchRadius = (Random.Range(minRadius, maxRadius));
+                 Vector3 scale = this.transform.localScale;
+
+                float sizeOffset = Random.Range(-scaleOffset,scaleOffset);
+                newAnimal.transform.localScale = new Vector3(scale.x + sizeOffset, scale.y + sizeOffset, scale.z + sizeOffset);
                 // FishMovement fishScript = newFish.GetComponent<FishMovement>();
                 // fishScript.speed = new Vector2(Random.Range(-3,3), Random.Range(-3,3));
                 // int index = (int)Random.Range(0, colors.Count);
